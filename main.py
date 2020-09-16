@@ -33,7 +33,7 @@ def get_options():
                         dest="organisation_name",
                         required=True,
                         default="",
-                        help="Specify the organization name on Github")
+                        help="Specify the organization name on Github.")
     parser.add_argument("-t", "--token",
                         action="store",
                         dest="token",
@@ -64,7 +64,36 @@ def get_options():
 
 
     # Arguments for plagiarism test
-    #parser.add_argument()
+    parser.add_argument('-u',"--user",
+                        action="store",
+                        dest="user",
+                        required=True,
+                        type=int,
+                        help="User id for MOSS."
+                        )
+
+    parser.add_argument("--expression",
+                        action="store",
+                        nargs='*',
+                        dest="glob_expression",
+                        help="Wildcard expression for the student code, for example '*/submission/a01-*.py' for all"
+                             "files begining with 'a01-' and finishing with '.py' in the submission folders of all"
+                             "directories"
+                        )
+
+    parser.add_argument("-l","--language",
+                        action="store",
+                        dest="language",
+                        default="python",
+                        help="Language of the code submitted."
+                        )
+
+    parser.add_argument("--template-files",
+                        action="store",
+                        nargs="*",
+                        dest="base_files",
+                        help="Base files for the plagiarism check to ignore"
+                        )
 
 
     options = parser.parse_args()
@@ -87,5 +116,7 @@ if __name__ == "__main__":
     print(f'[INFO] Checking the integrity of the test files')
     print(f'[INFO] Test files to check : {options.files_to_check}')
     to_check = check_files(options)
-    print(f'[INFO] Directories with modified test files : {to_check}')
+    if to_check:
+        print(f'[INFO] Directories with modified test files : {to_check}')
 
+    apply_to_moss(options)
