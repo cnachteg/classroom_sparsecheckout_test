@@ -25,11 +25,7 @@ git pull origin <pull_branch_name>
 """
 
 def get_requests(options):
-    # Force user to input both assignment and organisation name
-
     list_requests = []
-
-
 
     # require authentication
     if options.token:
@@ -79,7 +75,7 @@ def download_batch(options,list_requests):
                     clone_repository = True
 
                 if clone_repository:  # If the repository should be cloned
-                    print('[INFO] Cloning repository {repository["name"]}')
+                    print(f'[INFO] Cloning repository {repository["name"]}')
 
 
                     os.mkdir(repository["name"])
@@ -116,4 +112,4 @@ def download_batch(options,list_requests):
         else:  # Raise exception otherwise
             repo_list_request.raise_for_status()
 
-    print("[INFO] Total count: %d" % count)
+    print(f"[INFO] Total count: {count}")

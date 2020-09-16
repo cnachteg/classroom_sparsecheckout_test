@@ -5,6 +5,7 @@ import argparse
 
 #local
 from sparse_checkout import *
+from integrity_test_files import *
 from plagiarism_check import *
 
 def get_options():
@@ -47,6 +48,19 @@ def get_options():
                         )
 
     # Arguments for integrity test files
+    parser.add_argument("--files_to_check",
+                        action="store",
+                        nargs='*',
+                        dest="files_to_check",
+                        help="Path(s) of the test files to check the integrity of."
+                        )
+
+    parser.add_argument("--test_directory",
+                        action="store",
+                        dest="test_directory",
+                        default="",
+                        help="Name of the directory in the repository where you can find the test files to check."
+                        )
 
 
     # Arguments for plagiarism test
@@ -54,17 +68,24 @@ def get_options():
 
 
     options = parser.parse_args()
-    print(f'[INFO] Organization: {options.organisation_name}')
-    print(f'[INFO] Using ssh connection: {options.ssh_flag}')
-
-        # If an assignment name is passed, print it
-    if options.assignment_name:
-        print(f'[INFO] Assignment: {options.assignment_name}')
-    print(f'[INFO] Filter based on {options.checkout_file}')
 
     return options
 
 if __name__ == "__main__":
     options = get_options()
+    print(f'[INFO] Organization: {options.organisation_name}')
+    print(f'[INFO] Using ssh connection: {options.ssh_flag}')
+
+    # If an assignment name is passed, print it
+    if options.assignment_name:
+        print(f'[INFO] Assignment: {options.assignment_name}')
+    print(f'[INFO] Filter based on {options.checkout_file}')
     requests = get_requests(options)
     download_batch(options, requests)
+
+    #test integrity files
+    print(f'[INFO] Checking the integrity of the test files')
+    print(f'[INFO] Test files to check : {options.files_to_check}')
+    to_check = check_files(options)
+    print(f'[INFO] Directories with modified test files : {to_check}')
+
