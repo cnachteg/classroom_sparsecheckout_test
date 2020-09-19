@@ -6,7 +6,7 @@ Partially based on the repository jdestefani https://github.com/jdestefani/githu
 # Arguments and Usage
 ## Usage
 ```
-usage: argdown [-h] [-a ASSIGNMENT_NAME] [-d CHECKOUT_DATE] -f CHECKOUT_FILE
+usage: python main.py [-h] [-a ASSIGNMENT_NAME] [-d CHECKOUT_DATE] -f CHECKOUT_FILE
                -o ORGANISATION_NAME [-t TOKEN] [-s]
                [--files_to_check [FILES_TO_CHECK [FILES_TO_CHECK ...]]]
                [--test_directory TEST_DIRECTORY] -u USER
