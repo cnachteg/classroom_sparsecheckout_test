@@ -7,6 +7,7 @@ import argparse
 from sparse_checkout import *
 from integrity_test_files import *
 from plagiarism_check import *
+from get_points import *
 
 def get_options():
     parser = argparse.ArgumentParser()
@@ -111,6 +112,10 @@ if __name__ == "__main__":
     print(f'[INFO] Filter based on {options.checkout_file}')
     requests = get_requests(options)
     download_batch(options, requests)
+
+    # Get those points
+    print('[INFO] Getting the points and writing them in grades.tsv')
+    get_points(options, requests)
 
     #test integrity files
     print(f'[INFO] Checking the integrity of the test files')

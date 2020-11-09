@@ -15,9 +15,6 @@ def apply_to_moss(options):
     for expression in options.glob_expression:
         m.addFilesByWildcard(expression)
 
-    print(m.files)
-    print(m.base_files)
-
     url = m.send()
     print()
 

@@ -69,7 +69,7 @@ def download_batch(options,list_requests):
 
                 # If an assignment name is provided, check out only the repositories with that name
                 if options.assignment_name:
-                    if repository["name"].find(options.assignment_name) != -1:
+                    if repository["name"].find(options.assignment_name) != -1 and not repository['archived']:
                         clone_repository = True
                 else:  # Otherwise check out all the repositories
                     clone_repository = True
