@@ -25,7 +25,7 @@ def get_requests(token, orgs):
 
     return list_requests
 
-def list_repos_to_archive(date, list_requests):
+def list_repos_to_archive(date, name, list_requests):
     date = datetime.date.fromisoformat(date)
     to_archive = []
     for repo_list_request in list_requests:
@@ -35,7 +35,12 @@ def list_repos_to_archive(date, list_requests):
             # Filter repositories according to assignment name (if present) and clone them
             for repository in repo_list_request.json():
                 if datetime.date.fromisoformat(repository['updated_at'][:10]) < date:
-                    to_archive.append(repository['name'])
+                    if name:
+                        if repository['name'].find(name) != -1:
+                            to_archive.append(repository['name'])
+                    else:
+                        to_archive.append(repository['name'])
+
     return to_archive
 
 def archive_all(list_names, token, orgs):
@@ -49,9 +54,10 @@ if __name__ == "__main__":
     token = input('Token : ')
     orgs = input('Organisation name : ')
     date = input('Date (YYYY-MM-DD) : ')
+    name = input('Name of repos (not obligatory) : ')
 
     list_requests = get_requests(token, orgs)
-    list_names = list_repos_to_archive(date, list_requests)
-    archive_all(list_names, token, orgs)
+    list_names = list_repos_to_archive(date, name, list_requests)
+    #archive_all(list_names, token, orgs)
 
 

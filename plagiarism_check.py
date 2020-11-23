@@ -5,7 +5,6 @@ Function to launch plagiarism check
 import mosspy
 
 def apply_to_moss(options):
-    print(type(options.user))
     m = mosspy.Moss(options.user, options.language)
 
     #template files to ignore similarity

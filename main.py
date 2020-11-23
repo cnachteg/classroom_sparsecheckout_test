@@ -120,8 +120,10 @@ if __name__ == "__main__":
     #test integrity files
     print(f'[INFO] Checking the integrity of the test files')
     print(f'[INFO] Test files to check : {options.files_to_check}')
+    print('[INFO] Getting the bad directories and writing them in modified_test_directories.tsv')
     to_check = check_files(options)
     if to_check:
         print(f'[INFO] Directories with modified test files : {to_check}')
 
+    print('[INFO] Submitting the files for plagiarism detection')
     apply_to_moss(options)

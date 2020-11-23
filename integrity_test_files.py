@@ -35,6 +35,10 @@ def check_files(options):
                 md5_file = md5(file)
                 if md5_file != hash_dict[filename]:
                     print(f"File {filename} in {directory} is not matched !")
-                    bad_directories.append(directory)
+                    bad_directories.append((filename,directory))
         os.chdir(workdir)
-    return bad_directories
+
+    with open('modified_test_directories.tsv', 'w') as outfile:
+        for file,name in set(bad_directories):
+            outfile.write(f'{name}\t{file}\n')
+    return set(bad_directories)

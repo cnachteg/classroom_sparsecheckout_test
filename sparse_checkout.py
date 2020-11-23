@@ -1,6 +1,6 @@
 """
 Functions to download batch the repositories and filter to the folders and files desired + deadline date
-Based on jdestefani https://github.com/jdestefani/github-orgbatclone
+Based on jdestefani's repository https://github.com/jdestefani/github-orgbatclone
 """
 
 
@@ -9,6 +9,7 @@ import requests
 import os
 import subprocess
 import math
+import csv
 
 REPOSITORIES_PER_PAGE = 100
 
@@ -23,6 +24,22 @@ git config core.sparsecheckout true
 echo <dir1>/ >> .git/info/sparse-checkout
 git pull origin <pull_branch_name>
 """
+def gitLogToCSV():
+   GIT_COMMIT_FIELDS = ['id', 'author_name', 'author_email', 'date', 'message']
+   GIT_LOG_FORMAT = ['%H', '%an', '%ae', '%ad', '%s']
+   GIT_LOG_FORMAT = '%x1f'.join(GIT_LOG_FORMAT) + '%x1e' # Add ASCII field separator and record separator to simplify parsing
+
+   p = subprocess.Popen('git --git-dir .git log --format="%s"' % (GIT_LOG_FORMAT), shell=True, stdout=subprocess.PIPE)
+   (log, _) = p.communicate()
+   log = log.decode('UTF-8') # Decode the output from git log to UTF-8
+   log = log.strip('\n\x1e').split("\x1e")
+   log = [row.strip().split("\x1f") for row in log]
+   log = [dict(zip(GIT_COMMIT_FIELDS, row)) for row in log]
+
+   with open(f'gitLog.csv','w') as f:
+      w = csv.DictWriter(f,GIT_COMMIT_FIELDS)
+      w.writerow(dict((index,index) for index in GIT_COMMIT_FIELDS))
+      w.writerows(log)
 
 def get_requests(options):
     list_requests = []
@@ -89,13 +106,15 @@ def download_batch(options,list_requests):
                         print(repository["clone_url"])
                         subprocess.call(["git", "remote", "add", "origin", repository["clone_url"]])
 
-                    subprocess.call(["git","checkout","-b","master"])
+                    subprocess.call(["git","checkout","-b","main"])
 
                     subprocess.call(["git", "config", "core.sparsecheckout", "true"])
 
                     # copy the content you want to download for sparsecheckout
                     subprocess.call(["cp", f"../{options.checkout_file}", ".git/info/sparse-checkout"])
-                    subprocess.call(["git", "pull", "origin", "master"])
+                    subprocess.call(["git", "pull", "origin", "main"])
+
+                    gitLogToCSV()
 
                     # If a checkout date is set and the clone operation suceeded
                     if options.checkout_date:
@@ -104,7 +123,7 @@ def download_batch(options,list_requests):
                                        stderr=subprocess.STDOUT) != 128:  # If the repository is empty, git log returns exit code 128
                             commit_hash = subprocess.check_output(
                             ['git', 'rev-list', '-n', '1', '--before="' + options.checkout_date + '"',
-                             'master'])  # Find commit hash before desired dates
+                             'main'])  # Find commit hash before desired dates
                             subprocess.call(['git', 'checkout', '-b', 'deadline', commit_hash[:-1].decode(
                             "UTF-8")])  # Create and checkout to a deadline branch given commit hash
                     os.chdir(curr_dir)  # cd out of the repository
