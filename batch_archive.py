@@ -58,6 +58,6 @@ if __name__ == "__main__":
 
     list_requests = get_requests(token, orgs)
     list_names = list_repos_to_archive(date, name, list_requests)
-    #archive_all(list_names, token, orgs)
+    archive_all(list_names, token, orgs)
 
 
