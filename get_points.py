@@ -28,12 +28,16 @@ def get_points(options, list_requests):
                                     print(repository['name'])
                                 index += 1
                             if check_suite_id:
-                                points = requests.get(
+                                try:
+                                    points = requests.get(
                                     f'https://api.github.com/repos/{options.organisation_name}/{repository["name"]}/check-suites/{check_suite_id}/check-runs',
                                     headers=header).json()["check_runs"][0]["output"]["text"].split(" ")[1].split('/')[0]
+                                except:
+                                    print(repository['name'])
+                                    points = 0
                             else:
                                 points = 0
-                            grades[repository['name'].split('-')[-1]] = points
+                            grades[repository['name'].replace(options.assignment_name+'-', '')] = points
     else:
         print(f'[INFO] Impossible to retrieve grades without token')
 
