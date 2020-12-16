@@ -6,6 +6,8 @@ import mosspy
 
 def apply_to_moss(options):
     m = mosspy.Moss(options.user, options.language)
+    if options.base_files is None:
+        options.base_files = []
 
     #template files to ignore similarity
     for file in options.base_files:
