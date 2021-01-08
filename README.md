@@ -7,7 +7,7 @@ Partially based on the repository jdestefani https://github.com/jdestefani/githu
 ## Usage
 ```
 usage: python main.py [-h] [-a ASSIGNMENT_NAME] [-d CHECKOUT_DATE] -f CHECKOUT_FILE
-               -o ORGANISATION_NAME [-t TOKEN] [-s]
+               -o ORGANISATION_NAME [-t TOKEN] [-s] [-m]
                [--files_to_check [FILES_TO_CHECK [FILES_TO_CHECK ...]]]
                [--test_directory TEST_DIRECTORY] -u USER
                [--expression [GLOB_EXPRESSION [GLOB_EXPRESSION ...]]]
@@ -24,6 +24,7 @@ usage: python main.py [-h] [-a ASSIGNMENT_NAME] [-d CHECKOUT_DATE] -f CHECKOUT_F
 |`-o name` |`--organisation name`   |    |Specify the organization name on Github.                                                                                                                                            |
 |`-t XXX` |`--token XXX`          |      |Specify your personal token on Github                                                                                                                                               |
 |`-s` |`--ssh`            |        |Use ssh instead of default https connection to clone                                                                                                                                |
+|`-m` |`--master`            |        |Use `master` as the name of the branch instead of `main`                                                                                                                                |
 |     |`--files_to_check path` |  |Path(s) of the test files to check the integrity of.                                                                                                                                |
 |     |`--test_directory name` |      |Name of the directory in the repository where you can find the test files to check.                                                                                                 |
 |`-u int` |`--user int`           |  |User id for MOSS.                                                                                                                                                                   |

@@ -47,6 +47,12 @@ def get_options():
                         default=False,
                         help="Use ssh instead of default https connection to clone"
                         )
+    parser.add_argument("-m", "--master",
+                        action="store_false",
+                        dest="main",
+                        default=True,
+                        help="Use master as the name of the main branch instead of main"
+                        )
 
     # Arguments for integrity test files
     parser.add_argument("--files_to_check",

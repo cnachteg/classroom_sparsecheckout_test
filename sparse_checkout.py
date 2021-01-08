@@ -75,6 +75,7 @@ def get_requests(options):
 
 def download_batch(options,list_requests):
     count = 0
+    main_opt = 'main' if options.main else "master"
     for repo_list_request in list_requests:
 
         # Download repositories if correct request
@@ -106,13 +107,13 @@ def download_batch(options,list_requests):
                         print(repository["clone_url"])
                         subprocess.call(["git", "remote", "add", "origin", repository["clone_url"]])
 
-                    subprocess.call(["git","checkout","-b","main"])
+                    subprocess.call(["git","checkout","-b",main_opt])
 
                     subprocess.call(["git", "config", "core.sparsecheckout", "true"])
 
                     # copy the content you want to download for sparsecheckout
                     subprocess.call(["cp", f"../{options.checkout_file}", ".git/info/sparse-checkout"])
-                    subprocess.call(["git", "pull", "origin", "main"])
+                    subprocess.call(["git", "pull", "origin", main_opt])
 
                     gitLogToCSV()
 
@@ -123,7 +124,7 @@ def download_batch(options,list_requests):
                                        stderr=subprocess.STDOUT) != 128:  # If the repository is empty, git log returns exit code 128
                             commit_hash = subprocess.check_output(
                             ['git', 'rev-list', '-n', '1', '--before="' + options.checkout_date + '"',
-                             'main'])  # Find commit hash before desired dates
+                             main_opt])  # Find commit hash before desired dates
                             subprocess.call(['git', 'checkout', '-b', 'deadline', commit_hash[:-1].decode(
                             "UTF-8")])  # Create and checkout to a deadline branch given commit hash
                     os.chdir(curr_dir)  # cd out of the repository
