@@ -3,8 +3,11 @@ Scripts to download repositories from github classroom, check the integrity of t
 
 Partially based on the repository jdestefani https://github.com/jdestefani/github-orgbatclone which download batch repository from an assignment on github classroom with a specific deadline.
 
+There is an additional script to archive in batch repositories from an organisation to avoid students to push on old repositories.
+
 # Arguments and Usage
 ## Usage
+For the grades and plagiarism script :
 ```
 usage: python main.py [-h] [-a ASSIGNMENT_NAME] [-d CHECKOUT_DATE] -f CHECKOUT_FILE
                -o ORGANISATION_NAME [-t TOKEN] [-s] [-m]
@@ -13,6 +16,12 @@ usage: python main.py [-h] [-a ASSIGNMENT_NAME] [-d CHECKOUT_DATE] -f CHECKOUT_F
                [--expression [GLOB_EXPRESSION [GLOB_EXPRESSION ...]]]
                [-l LANGUAGE] [--template-files [BASE_FILES [BASE_FILES ...]]]
 ```
+
+For the archive in batch script, everything is asked in input:
+```
+usage: python batch_archive.py
+```
+
 ## Arguments
 ### Quick reference table
 |Short|Long               |Default |Description                                                                                                                                                                         |
